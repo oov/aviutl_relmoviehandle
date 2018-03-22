@@ -14,7 +14,7 @@
       </Flags>
       <SessionStorage Value="None"/>
       <MainUnit Value="0"/>
-      <Title Value="拡張編集キャッシュリリース for AviUtl"/>
+      <Title Value="動画ハンドル開放 for AviUtl"/>
       <UseAppBundle Value="False"/>
       <ResourceType Value="res"/>
     </General>
@@ -39,7 +39,7 @@
     </RequiredPackages>
     <Units Count="4">
       <Unit0>
-        <Filename Value="RelCache.lpr"/>
+        <Filename Value="RelMovieHandle.lpr"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="GCMZDrops"/>
       </Unit0>
@@ -64,7 +64,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="..\bin\RelCache.auf" ApplyConventions="False"/>
+      <Filename Value="..\bin\RelMovieHandle.auf" ApplyConventions="False"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>

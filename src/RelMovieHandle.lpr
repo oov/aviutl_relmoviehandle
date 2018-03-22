@@ -1,4 +1,4 @@
-library GCMZDrops;
+library RelMovieHandle;
 
 {$mode objfpc}{$H+}
 {$CODEPAGE UTF-8}

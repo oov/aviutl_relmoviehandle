@@ -9,9 +9,9 @@ uses
   Windows, SysUtils, AviUtl;
 
 type
-  { TRelCache }
+  { TRelMovieHandle }
 
-  TRelCache = class
+  TRelMovieHandle = class
   private
     FEntry: TFilterDLL;
     FExEdit: PFilter;
@@ -20,7 +20,7 @@ type
 
     function InitProc(Filter: PFilter): boolean;
     function ExitProc(Filter: PFilter): boolean;
-    procedure ReleaseCache();
+    procedure ReleaseMovieHandle();
   public
     constructor Create();
     destructor Destroy(); override;
@@ -30,7 +30,7 @@ type
 function GetFilterTableList(): PPFilterDLL; stdcall;
 
 var
-  RelCache: TRelCache;
+  RelMovieHandle: TRelMovieHandle;
 
 implementation
 
@@ -38,8 +38,8 @@ uses
   Hook, Ver;
 
 const
-  PluginName = '拡張編集キャッシュリリース';
-  PluginNameANSI = #$8A#$67#$92#$A3#$95#$D2#$8F#$57#$83#$4C#$83#$83#$83#$62#$83#$56#$83#$85#$83#$8A#$83#$8A#$81#$5B#$83#$58;
+  PluginName = '動画ハンドル開放';
+  PluginNameANSI = #$93#$AE#$89#$E6#$83#$6E#$83#$93#$83#$68#$83#$8B#$8A#$4A#$95#$FA;
   PluginInfoANSI = PluginNameANSI + ' ' + Version;
 
 const
@@ -55,12 +55,12 @@ end;
 
 function FilterFuncInit(fp: PFilter): AviUtlBool; cdecl;
 begin
-  Result := BoolConv[RelCache.InitProc(fp)];
+  Result := BoolConv[RelMovieHandle.InitProc(fp)];
 end;
 
 function FilterFuncExit(fp: PFilter): AviUtlBool; cdecl;
 begin
-  Result := BoolConv[RelCache.ExitProc(fp)];
+  Result := BoolConv[RelMovieHandle.ExitProc(fp)];
 end;
 
 function MenuWndProc(hwnd: HWND; Msg: UINT; WP: WPARAM; LP: LPARAM): LRESULT; stdcall;
@@ -69,16 +69,16 @@ begin
     WM_FILTER_COMMAND:
     begin
       case WP of
-        1: RelCache.ReleaseCache();
+        1: RelMovieHandle.ReleaseMovieHandle();
       end;
     end;
   end;
   Result := DefWindowProc(hwnd, Msg, WP, LP);
 end;
 
-{ TRelCache }
+{ TRelMovieHandle }
 
-procedure TRelCache.ReleaseCache();
+procedure TRelMovieHandle.ReleaseMovieHandle();
 begin
   InitHook(FExEdit^.DLLHInst);
   try
@@ -96,11 +96,11 @@ begin
   end;
 end;
 
-function TRelCache.InitProc(Filter: PFilter): boolean;
+function TRelMovieHandle.InitProc(Filter: PFilter): boolean;
 type
   ShiftJISString = type ansistring(932);
 const
-  ReleaseCacheCaption: WideString = '動画キャッシュを開放';
+  ReleaseMovieHandleCaption: WideString = '動画ハンドルを開放';
   ExEditNameANSI = #$8a#$67#$92#$a3#$95#$d2#$8f#$57; // '拡張編集'
   ExEditVersion = ' version 0.92 ';
   HWND_MESSAGE = HWND(-3);
@@ -149,27 +149,27 @@ begin
   wc.hCursor := 0;
   wc.hbrBackground := 0;
   wc.lpszMenuName := nil;
-  wc.lpszClassName := 'ExEditReleaseCacheMessageWindow';
+  wc.lpszClassName := 'ReleaseMovieHandleMessageWindow';
   Windows.RegisterClass(wc);
-  FWindow := CreateWindow('ExEditReleaseCacheMessageWindow', nil,
+  FWindow := CreateWindow('ReleaseMovieHandleMessageWindow', nil,
     WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
     CW_USEDEFAULT, HWND_MESSAGE, 0, Filter^.DLLHInst, nil);
-  Filter^.ExFunc^.AddMenuItem(Filter, PChar(ShiftJISString(ReleaseCacheCaption)),
+  Filter^.ExFunc^.AddMenuItem(Filter, PChar(ShiftJISString(ReleaseMovieHandleCaption)),
     FWindow, 1, VK_F5, ADD_MENU_ITEM_FLAG_KEY_CTRL);
   Filter^.Hwnd := FWindow;
 end;
 
-function TRelCache.ExitProc(Filter: PFilter): boolean;
+function TRelMovieHandle.ExitProc(Filter: PFilter): boolean;
 begin
   Result := True;
 end;
 
-function TRelCache.GetEntry: PFilterDLL;
+function TRelMovieHandle.GetEntry: PFilterDLL;
 begin
   Result := @FEntry;
 end;
 
-constructor TRelCache.Create();
+constructor TRelMovieHandle.Create();
 begin
   inherited Create;
 
@@ -180,22 +180,22 @@ begin
   FEntry.Information := PluginInfoANSI;
 end;
 
-destructor TRelCache.Destroy();
+destructor TRelMovieHandle.Destroy();
 begin
   inherited Destroy;
 end;
 
 initialization
-  RelCache := TRelCache.Create();
-  RelCache.Entry^.FuncInit := @FilterFuncInit;
-  RelCache.Entry^.FuncExit := @FilterFuncExit;
+  RelMovieHandle := TRelMovieHandle.Create();
+  RelMovieHandle.Entry^.FuncInit := @FilterFuncInit;
+  RelMovieHandle.Entry^.FuncExit := @FilterFuncExit;
 
   SetLength(FilterDLLList, 2);
-  FilterDLLList[0] := RelCache.Entry;
+  FilterDLLList[0] := RelMovieHandle.Entry;
   FilterDLLList[1] := nil;
 
 
 finalization
-  RelCache.Free();
+  RelMovieHandle.Free();
 
 end.

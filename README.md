@@ -1,4 +1,4 @@
-﻿# 拡張編集キャッシュリリース
+﻿# 動画ハンドル開放
 
 これは以下の手順を自動化するだけのものです。
 
@@ -11,35 +11,35 @@
 
 ## 注意事項
 
-拡張編集キャッシュリリースは無保証で提供されます。  
-拡張編集キャッシュリリースを使用したこと及び使用しなかったことによるいかなる損害について、開発者は何も保証しません。
+動画ハンドル開放は無保証で提供されます。  
+動画ハンドル開放を使用したこと及び使用しなかったことによるいかなる損害について、開発者は何も保証しません。
 
-これに同意できない場合、あなたは拡張編集キャッシュリリースを使用することができません。
+これに同意できない場合、あなたは動画ハンドル開放を使用することができません。
 
 ## ダウンロード
 
-https://github.com/oov/aviutl_relcache/releases
+https://github.com/oov/aviutl_relmoviehandle/releases
 
 ## インストール／アンインストール
 
-RelCache.auf を exedit.auf と同じ場所に置いてください。
+RelMovieHandle.auf を exedit.auf と同じ場所に置いてください。
 
 削除時もそれを削除するだけで OK です。
 
 ## 使い方
 
-キャッシュを削除したくなったら、AviUtl のメニューから `編集`→`拡張編集キャッシュリリース`→`動画キャッシュを開放` を選ぶと開放されます。
+動画ハンドルを削除したくなったら、AviUtl のメニューから `編集`→`動画ハンドル開放`→`動画ハンドルを開放` を選ぶと開放されます。
 
 このコマンドにはショートカットキー `Ctrl + F5` が標準で割り当てられています。
 
 ## バイナリのビルドについて
 
-拡張編集キャッシュリリースは [Lazarus](http://www.lazarus-ide.org/) 1.8.2 で開発しています。  
-外部のパッケージなどには依存していないため、インストール直後の状態で RelCache.lpi を開けばコンパイルできると思います。
+動画ハンドル開放は [Lazarus](http://www.lazarus-ide.org/) 1.8.2 で開発しています。  
+外部のパッケージなどには依存していないため、インストール直後の状態で RelMovieHandle.lpi を開けばコンパイルできると思います。
 
 ## Credits
 
-拡張編集キャッシュリリース is made possible by the following open source softwares.
+動画ハンドル開放 is made possible by the following open source softwares.
 
 ### Free Pascal Compiler / Lazarus
 
