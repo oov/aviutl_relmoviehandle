@@ -4,7 +4,7 @@
 sed 's/\r$//' README.md | sed 's/$/\r/' > bin/RelMovieHandle.txt
 
 # update version string
-VERSION='v1.0'
+VERSION='v1.1'
 GITHASH=`git rev-parse --short HEAD`
 cat << EOS | sed 's/\r$//' | sed 's/$/\r/' > 'src/ver.pas'
 unit Ver;

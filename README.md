@@ -34,7 +34,7 @@ AviUtl のメニューから `編集`→`動画ハンドル開放`→`動画ハ�
 
 ## バイナリのビルドについて
 
-動画ハンドル開放は [Lazarus](http://www.lazarus-ide.org/) 1.8.2 で開発しています。  
+動画ハンドル開放は [Lazarus](http://www.lazarus-ide.org/) 2.0.4 で開発しています。  
 外部のパッケージなどには依存していないため、インストール直後の状態で RelMovieHandle.lpi を開けばコンパイルできると思います。
 
 ## Credits
