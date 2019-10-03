@@ -97,15 +97,49 @@ begin
 end;
 
 function TRelMovieHandle.InitProc(Filter: PFilter): boolean;
+function ParseExEditVersion(S: string): integer;
+  function NumDot(S: string): integer;
+  var
+    i: integer;
+  begin
+    for i := Low(S) to High(S) do
+      case S[i] of
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.':;
+        else begin
+          Result := i - 1;
+          Exit;
+        end;
+      end;
+    Result := Length(S);
+  end;
+const
+  ExEditVersionString = ' version ';
+var
+  I: integer;
+  e: Extended;
+begin
+  Result := 0;
+  I := Pos(ExEditVersionString, S);
+  if I = 0 then
+     Exit;
+  Delete(S, 1, I + Length(ExEditVersionString) - 1);
+  I := NumDot(S);
+  if I = 0 then
+     Exit;
+  Delete(S, I + 1, Length(S));
+  E := StrToFloatDef(S, 0);
+  if E = 0 then
+     Exit;
+  Result := Trunc(E * 10000);
+end;
 type
   ShiftJISString = type ansistring(932);
 const
   ReleaseMovieHandleCaption: WideString = '動画ハンドルを開放';
   ExEditNameANSI = #$8a#$67#$92#$a3#$95#$d2#$8f#$57; // '拡張編集'
-  ExEditVersion = ' version 0.92 ';
   HWND_MESSAGE = HWND(-3);
 var
-  i: integer;
+  i, V: integer;
   wc: WNDCLASS;
   asi: TSysInfo;
   p: PFilter;
@@ -124,9 +158,11 @@ begin
       p := Filter^.ExFunc^.GetFilterP(i);
       if (p = nil) or (p^.Name <> ExEditNameANSI) then
         continue;
-      if StrPos(p^.Information, ExEditVersion) = nil then
-        raise Exception.Create('拡張編集' + ExEditVersion +
-          'が必要です。');
+      V := ParseExEditVersion(p^.Information);
+      if V = 0 then
+         raise Exception.Create('拡張編集のバージョンナンバー解析に失敗しました。');
+      if V < 9200 then
+         raise Exception.Create('拡張編集 version 0.92 以降が必要です。');
       FExEdit := p;
       break;
     end;
